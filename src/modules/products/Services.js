@@ -32,8 +32,28 @@ class ProductsService {
        }
    }
    async getProductByBarcode(barcode) {
-    const [rows] = await pool.query('SELECT * FROM productos WHERE codigo_barras = ?', [barcode]);
-    return rows[0];
+    try {
+        const [rows] = await pool.query('SELECT * FROM productos WHERE codigo_barras = ?', [barcode]);
+        if (!rows.length) {
+            return { success: false, message: 'Producto no encontrado' };
+        }
+        return { success: true, data: rows[0] };
+    } catch (error) {
+        console.error('Error al buscar producto por código de barras:', error);
+        return { success: false, message: 'Error al buscar producto', error: error.message };
+    }
+}
+async getProductByword(word) {
+    try {
+        const [rows] = await pool.query('SELECT * FROM productos WHERE nombre LIKE ?', [`%${word}%`]);
+        if (!rows.length) {
+            return { success: false, message: 'Producto no encontrado' };
+        }
+        return { success: true, data: rows };
+    } catch (error) {
+        console.error('Error al buscar producto por nombre:', error);
+        return { success: false, message: 'Error al buscar producto', error: error.message };
+    }
 }
 }
 

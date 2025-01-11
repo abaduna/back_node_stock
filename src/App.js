@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const productsRouter = require('./modules/products/router');
 const stockRouter = require('./modules/Stock/router');
-
+const usersRouter = require('./modules/users/Usersrouter');
+const shopsRouter = require('./modules/Comercios/ShopsRouter');
 const app = express();
 const port = 3000;
 
@@ -17,13 +18,11 @@ app.use(
   }),
 );
 
-app.use('/products', productsRouter);
-app.use('/stock', stockRouter); 
 // Ruta principal
-app.get('/', (req, res) => {
-  res.send('¡Hola, mundo desde Express!');
-});
-
+app.use('/api/products', productsRouter);
+app.use('/api/stock', stockRouter); 
+app.use('/api/shops', shopsRouter);
+app.use('/api/users', usersRouter);
 // Inicia el servidor
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
