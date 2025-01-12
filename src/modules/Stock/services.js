@@ -14,18 +14,21 @@ class StockService {
             return { success: false, message: 'Error al obtener stocks', error: error.message };
         }
     }
-    async updateStock(barcode, quantityIndividuos,quantityForBox,dateExpiration) {
+    async updateStock(barcode, quantityIndividuos, quantityForBox, dateExpiration) {
         try {
             console.log(barcode);
             const productService = new ProductService();
             const product = await productService.getProductByBarcode(barcode);
-            if (!product) {
+            console.log(product);
+            // Check if product exists and has the expected data structure
+            if (!product.success) {
                 return { success: false, message: 'Producto no encontrado' };
             }
+
             product.quantityForBox = quantityForBox;
-            const quantityTotal = quantityIndividuos + quantityForBox*product.quantityForBox;
+            const quantityTotal = quantityIndividuos + quantityForBox * product.quantityForBox;
             const [result] = await pool.query('INSERT INTO stock (id_producto, cantidad_productos_individuales, fecha_de_vencimiento) VALUES (?, ?, ?)',
-                 [product.data.id, quantityTotal, dateExpiration]);
+                [product.data.id, quantityTotal, dateExpiration]);
             return { success: true, message: 'Stock actualizado exitosamente', data: result };
         } catch (error) {
             console.error('Error al actualizar stock:', error);

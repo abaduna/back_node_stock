@@ -28,7 +28,11 @@ router.post('/', async (req, res, next) => {
             return res.status(400).json({ error: 'Todos los campos son requeridos' });
         }
         const result = await stockService.updateStock(barcode, quantityIndividuos, quantityForBox, dateExpiration);
-        res.status(201).json(result);
+        if (result.success) {
+            res.status(201).json(result);
+        } else {
+            res.status(400).json(result);
+        }
     } catch (error) {
         next(error);
     }

@@ -6,10 +6,10 @@ class ProductsController {
     const productsService = new ProductsService();
     productsService.getProductByBarcode(barcode)
     .then(result => {
-        if (!result) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
+        if (result.success) {
+            return res.status(200).json(result.data);
         }
-        return res.status(200).json("producto encontrado");
+        return res.status(404).json({ error: 'Producto no encontrado' });
     })
     .catch(error => res.status(500).json({ error: 'Error al obtener el producto' }));
    }

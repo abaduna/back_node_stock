@@ -6,8 +6,8 @@ class ShopsService {
         return rows;
     }
     async createShop(idUser, body) {
-        const { name } = body;
-        const [rows] = await pool.query('INSERT INTO shops (idUser, name) VALUES (?, ?)', [idUser, name]);
+        const { name, address } = body;
+        const [rows] = await pool.query('INSERT INTO shops (idUser, name, adress) VALUES (?, ?, ?)', [idUser, name, address]);
         return rows;
     }
     async deleteShop(idUser, idShop) {

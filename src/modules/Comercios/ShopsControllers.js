@@ -14,10 +14,11 @@ class ShopsController {
 
     async createShop(req, res, next) {
         try {
+            console.log(req.body);
             const result = await shopsService.createShop(req.params.idUser, req.body);
             res.status(200).json(result);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ success: false, message: 'Error al crear la tienda', error: error.message });
         }
     }
     async deleteShop(req, res, next) {
